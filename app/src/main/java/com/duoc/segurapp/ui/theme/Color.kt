@@ -1,4 +1,4 @@
-package com.duoc.segurapp.ui.Theme
+package com.duoc.segurapp.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
