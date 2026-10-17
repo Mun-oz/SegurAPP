@@ -30,20 +30,13 @@ fun HomeScreen(
     ) {
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text ="Seguridad Municipal",
-            style = MaterialTheme.typography.bodyLarge
+            text ="Municipalidad de San Joaquin",
+            style = MaterialTheme.typography.titleLarge
         )
-        Spacer(modifier = Modifier.height(8.dp))
-        Card(modifier= Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors()){
-            Column(
-                modifier = Modifier.fillMaxWidth().padding(16.dp),
-                horizontalAlignment  = Alignment.CenterHorizontally
-            ){
-                Text(
-                    text = "¿En que podemos ayudarte?",
-                    style = MaterialTheme.typography.titleMedium
-                )
+            Text(
+                text = "Seguridad de San Joaquín",
+                style = MaterialTheme.typography.titleMedium
+            )
                 Spacer(modifier= Modifier.height(24.dp))
                 Button(
                     onClick = onEmergenciaClick,
@@ -60,8 +53,8 @@ fun HomeScreen(
                     Text(text = "Inicar Sesion")
                 }
 
-            }
-
         }
-    }}
+
+    }
 }
+
