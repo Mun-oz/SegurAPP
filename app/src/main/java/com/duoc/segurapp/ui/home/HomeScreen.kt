@@ -11,6 +11,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -35,6 +36,31 @@ fun HomeScreen(
         Spacer(modifier = Modifier.height(8.dp))
         Card(modifier= Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors()){
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                horizontalAlignment  = Alignment.CenterHorizontally
+            ){
+                Text(
+                    text = "¿En que podemos ayudarte?",
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Spacer(modifier= Modifier.height(24.dp))
+                Button(
+                    onClick = onEmergenciaClick,
+                    modifier = Modifier.fillMaxWidth()
+                ){
+                    Text(text = "EMERGENCIA")
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Button(
+                    onClick = onIniciarSesionClick,
+                    modifier = Modifier.fillMaxWidth()
+                ){
+                    Text(text = "Inicar Sesion")
+                }
+
+            }
 
         }
     }}
