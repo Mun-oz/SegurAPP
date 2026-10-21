@@ -1,4 +1,7 @@
 package com.duoc.segurapp.model
 
-class Alarma {
-}
+class Alarma (
+    val id: String = " ",
+    val descripcion: String = " ",
+    val zona: String = " "
+)
