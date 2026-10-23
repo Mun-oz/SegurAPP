@@ -53,8 +53,12 @@ class MainActivity : ComponentActivity() {
                             },
                             onVolverClick = {
                                 pantalla = "Inicio"
+                            },
+                            onRegistrarseClick = {
+                                pantalla = "Inicio"
                             }
                         )
+
                     }
 
                     "Registrar" -> {

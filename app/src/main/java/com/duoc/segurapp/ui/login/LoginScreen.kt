@@ -1,5 +1,6 @@
 package com.duoc.segurapp.ui.login
 
+import android.R
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -19,19 +21,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun LoginScreen(
     onLoginSuccess: () -> Unit,
-    onVolverClick: () -> Unit
+    onVolverClick: () -> Unit,
+    onRegistrarseClick: () -> Unit
 ) {
 
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
-    Scaffold { innerPadding ->
+    Scaffold(    containerColor = Color(0xFFFFF7ED)) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -91,6 +95,17 @@ fun LoginScreen(
             ) {
                 Text("Volver al Menu")
             }
+
+            Spacer(modifier = Modifier.height(12.dp))
+            Button(onClick = {onRegistrarseClick()},
+                modifier = Modifier.height(45.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF164E63),
+                    contentColor = Color.White
+                )
+            )
+            {
+                Text("No tienes cuenta Crea una Aqui" )}
 
         }
     }

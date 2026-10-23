@@ -27,7 +27,7 @@ fun HomeScreen(
     onEmergenciaClick: () -> Unit = {},
     onIniciarSesionClick: () -> Unit = {}
 ) {
-    Scaffold { innerPadding ->
+    Scaffold(    containerColor = Color(0xFFFFF7ED)) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -47,7 +47,7 @@ fun HomeScreen(
                 text = "SegurAPP",
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF173B67)
+                color = Color(0xFF1FA6B6)
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -90,7 +90,10 @@ fun HomeScreen(
                 onClick = onIniciarSesionClick,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(54.dp)
+                    .height(54.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = (Color(0xFF164E63))
+                )
             ) {
                 Text(
                     text = "Iniciar sesión",
