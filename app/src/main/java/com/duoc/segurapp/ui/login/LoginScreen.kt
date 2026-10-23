@@ -24,7 +24,8 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun LoginScreen(
-    onLoginSuccess: () -> Unit
+    onLoginSuccess: () -> Unit,
+    onVolverClick: () -> Unit
 ) {
 
     var username by remember { mutableStateOf("") }
@@ -52,7 +53,7 @@ fun LoginScreen(
                 style = MaterialTheme.typography.bodyLarge
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
             OutlinedTextField(
                 value = username,
@@ -83,6 +84,14 @@ fun LoginScreen(
             ) {
                 Text("Ingresar")
             }
+            Spacer(modifier = Modifier.height(15.dp))
+            Button(
+                onClick = {onVolverClick()},
+                modifier = Modifier.fillMaxWidth().height(45.dp)
+            ) {
+                Text("Volver al Menu")
+            }
+
         }
     }
 }
