@@ -1,4 +1,3 @@
-
 package com.duoc.segurapp
 
 import android.os.Bundle
@@ -15,6 +14,8 @@ import com.duoc.segurapp.ui.home.HomeScreen
 import com.duoc.segurapp.ui.login.LoginScreen
 import com.duoc.segurapp.ui.theme.SegurAPPTheme
 import com.duoc.segurapp.viewmodel.ViewAlarma
+import com.duoc.segurapp.ui.googlemap.GoogleMapsScreen
+import com.duoc.segurapp.ui.ciudadano.CiudadanoScreen
 
 class MainActivity : ComponentActivity() {
 
@@ -49,7 +50,7 @@ class MainActivity : ComponentActivity() {
                     "Login" -> {
                         LoginScreen(
                             onLoginSuccess = {
-                                pantalla = "Inicio"
+                                pantalla = "Ciudadano"
                             },
                             onVolverClick = {
                                 pantalla = "Inicio"
@@ -73,6 +74,17 @@ class MainActivity : ComponentActivity() {
                                 pantalla = "Inicio"
                             },
                             onVolverClick = {
+                                pantalla = "Inicio"
+                            }
+                        )
+                    }
+
+                    "Mapa" -> {
+                        GoogleMapsScreen()
+                    }
+                    "Ciudadano" -> {
+                        CiudadanoScreen(
+                            onCerrarSesionClick = {
                                 pantalla = "Inicio"
                             }
                         )
