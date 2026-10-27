@@ -1,24 +1,8 @@
 package com.duoc.segurapp.ui.login
 
-import android.R
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,38 +15,90 @@ fun LoginScreen(
     onVolverClick: () -> Unit,
     onRegistrarseClick: () -> Unit
 ) {
+    var perfil by remember { mutableStateOf("Ciudadano") }
+    var usuario by remember { mutableStateOf("") }
+    var contrasena by remember { mutableStateOf("") }
+    var mensaje by remember { mutableStateOf("") }
 
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    Scaffold(
+        containerColor = Color(0xFFFFF7ED)
+    ) { padding ->
 
-    Scaffold(    containerColor = Color(0xFFFFF7ED)) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 24.dp),
+                .padding(padding)
+                .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+
             Text(
                 text = "SegurApp",
                 style = MaterialTheme.typography.headlineLarge,
-                color = MaterialTheme.colorScheme.primary
+                color = Color(0xFF164E63)
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Text("Selecciona tu tipo de usuario")
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Button(
+                    onClick = {
+                        perfil = "Ciudadano"
+                        usuario = ""
+                        contrasena = ""
+                        mensaje = ""
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (perfil == "Ciudadano")
+                            Color(0xFF164E63) else Color.Gray
+                    )
+                ) {
+                    Text("Ciudadano")
+                }
+
+                Button(
+                    onClick = {
+                        perfil = "Funcionario"
+                        usuario = ""
+                        contrasena = ""
+                        mensaje = ""
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (perfil == "Funcionario")
+                            Color(0xFF164E63) else Color.Gray
+                    )
+                ) {
+                    Text("Funcionario")
+                }
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = "Acceso de Personal",
-                style = MaterialTheme.typography.bodyLarge
+                text = "Inicio de sesión",
+                style = MaterialTheme.typography.titleLarge
             )
 
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             OutlinedTextField(
-                value = username,
-                onValueChange = { username = it },
-                label = { Text("Usuario") },
+                value = usuario,
+                onValueChange = { usuario = it },
+                label = {
+                    Text(
+                        if (perfil == "Funcionario")
+                            "Correo institucional"
+                        else
+                            "Nombre de usuario"
+                    )
+                },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -70,43 +106,61 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
+                value = contrasena,
+                onValueChange = { contrasena = it },
                 label = { Text("Contraseña") },
                 visualTransformation = PasswordVisualTransformation(),
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             Button(
-                onClick = { onLoginSuccess() },
+                onClick = {
+                    if (usuario.isBlank() || contrasena.isBlank()) {
+                        mensaje = "Completa todos los campos"
+                    } else if (perfil == "Funcionario") {
+                        if (!usuario.contains("@")) {
+                            mensaje = "Ingresa un correo válido"
+                        } else {
+                            mensaje = "Acceso de funcionario pendiente"
+                        }
+                    } else {
+                        mensaje = ""
+                        onLoginSuccess()
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp)
             ) {
-                Text("Ingresar")
-            }
-            Spacer(modifier = Modifier.height(15.dp))
-            Button(
-                onClick = {onVolverClick()},
-                modifier = Modifier.fillMaxWidth().height(45.dp)
-            ) {
-                Text("Volver al Menu")
+                Text("Iniciar sesión")
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
-            Button(onClick = {onRegistrarseClick()},
-                modifier = Modifier.height(45.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF164E63),
-                    contentColor = Color.White
+            if (mensaje.isNotEmpty()) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = mensaje,
+                    color = Color(0xFFD92828)
                 )
-            )
-            {
-                Text("No tienes cuenta Crea una Aqui" )}
+            }
 
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                if (perfil == "Ciudadano") {
+                    TextButton(onClick = onRegistrarseClick) {
+                        Text("¿No tienes cuenta? Regístrate")
+                    }
+                }
+            }
+            TextButton(onClick = onVolverClick) {
+                Text("Volver al inicio")
+            }
         }
     }
 }
