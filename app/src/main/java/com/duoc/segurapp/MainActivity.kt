@@ -18,6 +18,7 @@ import com.duoc.segurapp.ui.googlemap.GoogleMapsScreen
 import com.duoc.segurapp.ui.ciudadano.CiudadanoScreen
 import com.duoc.segurapp.ui.registro.RegistroScreen
 import com.duoc.segurapp.ui.seguimiento.SeguimientoScreen
+import com.duoc.segurapp.ui.funcionario.FuncionarioScreen
 
 class MainActivity : ComponentActivity() {
 
@@ -58,6 +59,9 @@ class MainActivity : ComponentActivity() {
                             onLoginSuccess = {
                                 pantalla = "Ciudadano"
                             },
+                            onFuncionarioLogin = {
+                                pantalla = "Funcionario"
+                            },
                             onVolverClick = {
                                 pantalla = "Inicio"
                             },
@@ -65,7 +69,6 @@ class MainActivity : ComponentActivity() {
                                 pantalla = "Registro"
                             }
                         )
-
                     }
 
                     "Registro" -> {
@@ -108,6 +111,14 @@ class MainActivity : ComponentActivity() {
                             },
                             onSeguimientoClick = {
                                 pantalla = "Seguimiento"
+                            }
+                        )
+                    }
+
+                    "Funcionario" -> {
+                        FuncionarioScreen(
+                            onSalirClick = {
+                                pantalla = "Inicio"
                             }
                         )
                     }

@@ -12,9 +12,10 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun LoginScreen(
     onLoginSuccess: () -> Unit,
+    onFuncionarioLogin: () -> Unit,
     onVolverClick: () -> Unit,
     onRegistrarseClick: () -> Unit
-) {
+){
     var perfil by remember { mutableStateOf("Ciudadano") }
     var usuario by remember { mutableStateOf("") }
     var contrasena by remember { mutableStateOf("") }
@@ -124,7 +125,8 @@ fun LoginScreen(
                         if (!usuario.contains("@")) {
                             mensaje = "Ingresa un correo válido"
                         } else {
-                            mensaje = "Acceso de funcionario pendiente"
+                            mensaje = ""
+                            onFuncionarioLogin()
                         }
                     } else {
                         mensaje = ""
