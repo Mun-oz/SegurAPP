@@ -16,6 +16,7 @@ import com.duoc.segurapp.ui.theme.SegurAPPTheme
 import com.duoc.segurapp.viewmodel.ViewAlarma
 import com.duoc.segurapp.ui.googlemap.GoogleMapsScreen
 import com.duoc.segurapp.ui.ciudadano.CiudadanoScreen
+import com.duoc.segurapp.ui.registro.RegistroScreen
 
 class MainActivity : ComponentActivity() {
 
@@ -32,6 +33,10 @@ class MainActivity : ComponentActivity() {
 
                 val viewAlarma = remember {
                     ViewAlarma()
+                }
+
+                var cuentaPrueba by remember {
+                    mutableStateOf<Pair<String, String>?>(null)
                 }
 
                 when (pantalla) {
@@ -56,10 +61,22 @@ class MainActivity : ComponentActivity() {
                                 pantalla = "Inicio"
                             },
                             onRegistrarseClick = {
-                                pantalla = "Inicio"
+                                pantalla = "Registro"
                             }
                         )
 
+                    }
+
+                    "Registro" -> {
+                        RegistroScreen(
+                            onRegistrarClick = { usuario, contrasena ->
+                                cuentaPrueba = usuario to contrasena
+                                pantalla = "Login"
+                            },
+                            onVolverClick = {
+                                pantalla = "Login"
+                            }
+                        )
                     }
 
                     "Registrar" -> {
