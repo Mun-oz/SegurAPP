@@ -12,7 +12,8 @@ import androidx.compose.ui.graphics.Color
 @Composable
 fun CiudadanoScreen(
     onCerrarSesionClick: () -> Unit,
-    onSeguimientoClick: () -> Unit
+    onSeguimientoClick: () -> Unit,
+    onMisAlarmasClick: () -> Unit
 ) {
 
     Scaffold(
@@ -51,6 +52,11 @@ fun CiudadanoScreen(
                     .padding(horizontal = 16.dp)
             ) {
                 Text("Revisar seguimiento")
+            }
+
+            Button(onClick = onMisAlarmasClick,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)){
+                Text("Mis alarmas")
             }
 
             GoogleMapsScreen()

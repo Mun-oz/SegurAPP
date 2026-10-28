@@ -19,7 +19,7 @@ import com.duoc.segurapp.ui.ciudadano.CiudadanoScreen
 import com.duoc.segurapp.ui.registro.RegistroScreen
 import com.duoc.segurapp.ui.seguimiento.SeguimientoScreen
 import com.duoc.segurapp.ui.funcionario.FuncionarioScreen
-
+import com.duoc.segurapp.ui.alarma.MisAlarmasScreen
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,7 +111,9 @@ class MainActivity : ComponentActivity() {
                             },
                             onSeguimientoClick = {
                                 pantalla = "Seguimiento"
-                            }
+                            },
+                            onMisAlarmasClick = {pantalla = "MisAlarmas"}
+
                         )
                     }
 
@@ -128,6 +130,13 @@ class MainActivity : ComponentActivity() {
                             onVolverClick = {
                                 pantalla = "Ciudadano"
                             }
+                        )
+                    }
+
+                    "MisAlarmas" -> {
+                        MisAlarmasScreen(alarmas = viewAlarma.alarmas,
+                            onVolverClick = {pantalla = "Inicio"},
+                            onVolverCuidadanoClick = {pantalla = "Ciudadano"}
                         )
                     }
 
