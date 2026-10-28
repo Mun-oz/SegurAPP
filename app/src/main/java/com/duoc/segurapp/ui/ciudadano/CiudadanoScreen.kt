@@ -10,7 +10,10 @@ import com.duoc.segurapp.ui.googlemap.GoogleMapsScreen
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun CiudadanoScreen(onCerrarSesionClick: () -> Unit) {
+fun CiudadanoScreen(
+    onCerrarSesionClick: () -> Unit,
+    onSeguimientoClick: () -> Unit
+) {
 
     Scaffold(
         containerColor = Color(0xFFFFF7ED),
@@ -40,6 +43,16 @@ fun CiudadanoScreen(onCerrarSesionClick: () -> Unit) {
                 .fillMaxSize()
                 .padding(padding)
         ) {
+
+            Button(
+                onClick = onSeguimientoClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            ) {
+                Text("Revisar seguimiento")
+            }
+
             GoogleMapsScreen()
         }
     }

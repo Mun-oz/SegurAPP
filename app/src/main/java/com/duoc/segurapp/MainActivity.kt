@@ -17,6 +17,7 @@ import com.duoc.segurapp.viewmodel.ViewAlarma
 import com.duoc.segurapp.ui.googlemap.GoogleMapsScreen
 import com.duoc.segurapp.ui.ciudadano.CiudadanoScreen
 import com.duoc.segurapp.ui.registro.RegistroScreen
+import com.duoc.segurapp.ui.seguimiento.SeguimientoScreen
 
 class MainActivity : ComponentActivity() {
 
@@ -99,13 +100,26 @@ class MainActivity : ComponentActivity() {
                     "Mapa" -> {
                         GoogleMapsScreen()
                     }
+
                     "Ciudadano" -> {
                         CiudadanoScreen(
                             onCerrarSesionClick = {
                                 pantalla = "Inicio"
+                            },
+                            onSeguimientoClick = {
+                                pantalla = "Seguimiento"
                             }
                         )
                     }
+
+                    "Seguimiento" -> {
+                        SeguimientoScreen(
+                            onVolverClick = {
+                                pantalla = "Ciudadano"
+                            }
+                        )
+                    }
+
                 }
             }
         }
