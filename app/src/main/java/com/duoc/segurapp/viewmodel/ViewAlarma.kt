@@ -1,4 +1,5 @@
 package com.duoc.segurapp.viewmodel
+
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import com.duoc.segurapp.model.Alarma
@@ -54,11 +55,12 @@ class ViewAlarma(
         }
     }
 
-        fun buscarAlarmaPorId(id: String): Alarma? {
-            return repositorio.buscarAlarmaPorId(id)
-        }
+    fun buscarAlarmaPorId(id: String): Alarma? {
+        return repositorio.buscarAlarmaPorId(id)
+    }
 
-        fun obtenerAlarmasPorEstado(estado: String): List<Alarma> {
-            return _alarmas.filter { it.estado == estado }
-        }
+    fun obtenerAlarmasPorEstado(estado: String): List<Alarma> {
+        return _alarmas.filter { it.estado == estado }
+    }
+
 }
