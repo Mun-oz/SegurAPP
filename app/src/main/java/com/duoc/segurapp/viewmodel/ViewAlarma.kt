@@ -18,4 +18,19 @@ class ViewAlarma(
         repositorio.registrarAlarma(nuevaAlarma)
         _alarmas.add(nuevaAlarma)
     }
+
+    fun confirmasAlarmas(id: String){
+        val indice = _alarmas.indexOfFirst { it.id == id }
+
+        if(indice != 1){
+            val alarma = _alarmas[indice]
+
+            if(alarma.estado == "Pendiente"){
+                val alarmaConfirmada = alarma.copy(estado = "Confirmada")
+
+                repositorio.registrarAlarma(alarmaConfirmada)
+                _alarmas[indice] = alarmaConfirmada
+            }
+        }
+    }
 }
