@@ -22,7 +22,7 @@ class ViewAlarma(
     fun confirmarAlarma(id: String){
         val indice = _alarmas.indexOfFirst { it.id == id }
 
-        if(indice != 1){
+        if(indice != -1){
             val alarma = _alarmas[indice]
 
             if(alarma.estado == "Pendiente"){
