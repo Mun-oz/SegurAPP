@@ -1,6 +1,6 @@
 package com.duoc.segurapp.ui.alarma
 
-import android.R
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -27,7 +27,8 @@ import com.duoc.segurapp.model.Alarma
 fun MisAlarmasScreen(
     alarmas : List<Alarma>,
     onVolverClick: () -> Unit,
-    onVolverCuidadanoClick: () -> Unit
+    onVolverCuidadanoClick: () -> Unit,
+    onConfirmarAlarmaClick: (String) -> Unit
 ){
     Scaffold(
         containerColor = Color(0xFFF0FDFA)
@@ -78,6 +79,18 @@ fun MisAlarmasScreen(
                                     text = "Estado: ${alarma.estado}",
                                     color = Color(0xFFB45309)
                                 )
+                                if (alarma.estado == "Pendiente") {
+                                    Spacer(modifier = Modifier.height(12.dp))
+
+                                    Button(
+                                        onClick = {
+                                            onConfirmarAlarmaClick(alarma.id)
+                                        },
+                                        modifier = Modifier.fillMaxWidth()
+                                    ) {
+                                        Text("Confirmar alarma")
+                                    }
+                                }
                             }
                         }
                     }

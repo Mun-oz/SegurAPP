@@ -19,7 +19,7 @@ class ViewAlarma(
         _alarmas.add(nuevaAlarma)
     }
 
-    fun confirmasAlarmas(id: String){
+    fun confirmarAlarma(id: String){
         val indice = _alarmas.indexOfFirst { it.id == id }
 
         if(indice != 1){
@@ -28,7 +28,7 @@ class ViewAlarma(
             if(alarma.estado == "Pendiente"){
                 val alarmaConfirmada = alarma.copy(estado = "Confirmada")
 
-                repositorio.registrarAlarma(alarmaConfirmada)
+                repositorio.actualizarAlarma(alarmaConfirmada)
                 _alarmas[indice] = alarmaConfirmada
             }
         }

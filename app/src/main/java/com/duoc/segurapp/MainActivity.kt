@@ -20,6 +20,10 @@ import com.duoc.segurapp.ui.registro.RegistroScreen
 import com.duoc.segurapp.ui.seguimiento.SeguimientoScreen
 import com.duoc.segurapp.ui.funcionario.FuncionarioScreen
 import com.duoc.segurapp.ui.alarma.MisAlarmasScreen
+import com.duoc.segurapp.ui.confirmaralarma.ConfirmarAlarmaScreen
+import com.duoc.segurapp.ui.confirmarenvio.ConfirmarEnvioScreen
+import com.duoc.segurapp.ui.confirmarenvio.EnvioExitosoScreen
+
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +39,9 @@ class MainActivity : ComponentActivity() {
 
                 val viewAlarma = remember {
                     ViewAlarma()
+                }
+                var alarmaPendiente by remember {
+                    mutableStateOf<Alarma?>(null)
                 }
 
                 var cuentaPrueba by remember {
@@ -85,20 +92,47 @@ class MainActivity : ComponentActivity() {
 
                     "Registrar" -> {
                         registrarAlarma(
-                                onRegistrarAlarmaClick = { descripcion, zona ->
-                                val alarma = Alarma(
+                            onRegistrarAlarmaClick = { descripcion, zona ->
+                                alarmaPendiente = Alarma(
                                     descripcion = descripcion,
                                     zona = zona
                                 )
-
-                                viewAlarma.registrarAlarma(alarma)
-                                pantalla = "Inicio"
+                                pantalla = "ConfirmarEnvio"
                             },
                             onVolverClick = {
                                 pantalla = "Inicio"
                             }
                         )
                     }
+
+                    "ConfirmarEnvio" -> {
+                        val alarma = alarmaPendiente
+
+                        if (alarma == null) {
+                            pantalla = "Registrar"
+                        } else {
+                            ConfirmarEnvioScreen(
+                                alarma = alarma,
+                                onConfirmarClick = {
+                                    viewAlarma.registrarAlarma(alarma)
+                                    alarmaPendiente = null
+                                    pantalla = "EnvioExitoso"
+                                },
+                                onCancelarClick = {
+                                    pantalla = "Registrar"
+                                }
+                            )
+                        }
+                    }
+
+                    "EnvioExitoso" -> {
+                        EnvioExitosoScreen(
+                            onVolverInicioClick = {
+                                pantalla = "Inicio"
+                            }
+                        )
+                    }
+
 
                     "Mapa" -> {
                         GoogleMapsScreen()
@@ -136,9 +170,18 @@ class MainActivity : ComponentActivity() {
                     "MisAlarmas" -> {
                         MisAlarmasScreen(alarmas = viewAlarma.alarmas,
                             onVolverClick = {pantalla = "Inicio"},
-                            onVolverCuidadanoClick = {pantalla = "Ciudadano"}
+                            onVolverCuidadanoClick = {pantalla = "Ciudadano"},
+                            onConfirmarAlarmaClick = {id -> viewAlarma.confirmarAlarma(id)}
                         )
                     }
+
+                    "Registrar Emergencia" -> {
+                        ConfirmarAlarmaScreen(
+                            viewAlarma = viewAlarma,
+                            onVolverClick = {pantalla = "Inicio"}
+                        )
+                    }
+
 
                 }
             }

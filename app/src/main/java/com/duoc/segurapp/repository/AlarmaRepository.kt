@@ -11,4 +11,11 @@ class AlarmaRepository {
         return alarmas.toList()
     }
 
+    fun actualizarAlarma(alarmaActualizada: Alarma){
+        val indice = alarmas.indexOfFirst { it.id == alarmaActualizada.id }
+        if(indice != 1){
+            alarmas[indice] = alarmaActualizada
+        }
+    }
+
 }
