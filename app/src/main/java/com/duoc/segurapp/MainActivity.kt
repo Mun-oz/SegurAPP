@@ -179,6 +179,7 @@ class MainActivity : ComponentActivity() {
 
                     "Seguimiento" -> {
                         SeguimientoScreen(
+                            alarmas = viewAlarma.alarmas,
                             onVolverClick = {
                                 pantalla = "Ciudadano"
                             }
