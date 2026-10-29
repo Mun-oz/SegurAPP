@@ -21,12 +21,34 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.draw.scale
 
 @Composable
 fun HomeScreen(
     onEmergenciaClick: () -> Unit = {},
     onIniciarSesionClick: () -> Unit = {}
 ) {
+    val animacion = rememberInfiniteTransition(
+        label = "animacionInicio"
+    )
+
+    val escala by animacion.animateFloat(
+        initialValue = 1f,
+        targetValue = 1.035f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1000),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "escalaBoton"
+    )
+
+
     Scaffold(    containerColor = Color(0xFFFFF7ED)) { innerPadding ->
         Column(
             modifier = Modifier
@@ -86,13 +108,15 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
+
             Button(
                 onClick = onIniciarSesionClick,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(54.dp),
+                    .height(54.dp)
+                    .scale(escala),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = (Color(0xFF164E63))
+                    containerColor = Color(0xFF164E63)
                 )
             ) {
                 Text(
@@ -100,6 +124,7 @@ fun HomeScreen(
                     fontSize = 16.sp
                 )
             }
+
 
             Spacer(modifier = Modifier.height(32.dp))
 
