@@ -25,10 +25,9 @@ import com.duoc.segurapp.model.Alarma
 
 @Composable
 fun MisAlarmasScreen(
-    alarmas : List<Alarma>,
+    alarmas: List<Alarma>,
     onVolverClick: () -> Unit,
-    onVolverCuidadanoClick: () -> Unit,
-    onConfirmarAlarmaClick: (String) -> Unit
+    onVolverCuidadanoClick: () -> Unit
 ){
     Scaffold(
         containerColor = Color(0xFFF0FDFA)
@@ -79,18 +78,7 @@ fun MisAlarmasScreen(
                                     text = "Estado: ${alarma.estado}",
                                     color = Color(0xFFB45309)
                                 )
-                                if (alarma.estado == "Pendiente") {
-                                    Spacer(modifier = Modifier.height(12.dp))
 
-                                    Button(
-                                        onClick = {
-                                            onConfirmarAlarmaClick(alarma.id)
-                                        },
-                                        modifier = Modifier.fillMaxWidth()
-                                    ) {
-                                        Text("Confirmar alarma")
-                                    }
-                                }
                             }
                         }
                     }

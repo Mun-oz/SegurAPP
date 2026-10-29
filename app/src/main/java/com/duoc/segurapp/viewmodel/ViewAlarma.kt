@@ -19,18 +19,46 @@ class ViewAlarma(
         _alarmas.add(nuevaAlarma)
     }
 
-    fun confirmarAlarma(id: String){
+
+    fun confirmarAlarma(id: String) {
         val indice = _alarmas.indexOfFirst { it.id == id }
 
-        if(indice != -1){
-            val alarma = _alarmas[indice]
+        if (indice == -1) return
 
-            if(alarma.estado == "Pendiente"){
-                val alarmaConfirmada = alarma.copy(estado = "Confirmada")
+        val alarma = _alarmas[indice]
 
-                repositorio.actualizarAlarma(alarmaConfirmada)
-                _alarmas[indice] = alarmaConfirmada
-            }
+        if (alarma.estado == "Pendiente") {
+            val actualizada = alarma.copy(
+                estado = "En revisión"
+            )
+
+            repositorio.actualizarAlarma(actualizada)
+            _alarmas[indice] = actualizada
         }
     }
+
+    fun cerrarAlarma(id: String) {
+        val indice = _alarmas.indexOfFirst { it.id == id }
+
+        if (indice == -1) return
+
+        val alarma = _alarmas[indice]
+
+        if (alarma.estado == "En revisión") {
+            val actualizada = alarma.copy(
+                estado = "Cerrada"
+            )
+
+            repositorio.actualizarAlarma(actualizada)
+            _alarmas[indice] = actualizada
+        }
+    }
+
+        fun buscarAlarmaPorId(id: String): Alarma? {
+            return repositorio.buscarAlarmaPorId(id)
+        }
+
+        fun obtenerAlarmasPorEstado(estado: String): List<Alarma> {
+            return _alarmas.filter { it.estado == estado }
+        }
 }
