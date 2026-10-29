@@ -11,8 +11,8 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun LoginScreen(
-    onLoginSuccess: () -> Unit,
-    onFuncionarioLogin: () -> Unit,
+    onLoginSuccess: (String) -> Unit,
+    onFuncionarioLogin: (String) -> Unit,
     onVolverClick: () -> Unit,
     onRegistrarseClick: () -> Unit
 ){
@@ -126,11 +126,11 @@ fun LoginScreen(
                             mensaje = "Ingresa un correo válido"
                         } else {
                             mensaje = ""
-                            onFuncionarioLogin()
+                            onFuncionarioLogin(usuario.trim().substringBefore("@"))
                         }
                     } else {
                         mensaje = ""
-                        onLoginSuccess()
+                        onLoginSuccess(usuario.trim())
                     }
                 },
                 modifier = Modifier

@@ -47,6 +47,10 @@ class MainActivity : ComponentActivity() {
                     mutableStateOf<Pair<String, String>?>(null)
                 }
 
+                var usuarioSesion by remember {
+                    mutableStateOf("")
+                }
+
                 when (pantalla) {
 
                     "Inicio" -> {
@@ -60,12 +64,15 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
+
                     "Login" -> {
                         LoginScreen(
-                            onLoginSuccess = {
+                            onLoginSuccess = { usuario ->
+                                usuarioSesion = usuario
                                 pantalla = "Ciudadano"
                             },
-                            onFuncionarioLogin = {
+                            onFuncionarioLogin = { usuario ->
+                                usuarioSesion = usuario
                                 pantalla = "Funcionario"
                             },
                             onVolverClick = {
@@ -139,20 +146,32 @@ class MainActivity : ComponentActivity() {
 
                     "Ciudadano" -> {
                         CiudadanoScreen(
+                            usuario = usuarioSesion,
                             onCerrarSesionClick = {
+                                usuarioSesion = ""
                                 pantalla = "Inicio"
                             },
                             onSeguimientoClick = {
                                 pantalla = "Seguimiento"
                             },
-                            onMisAlarmasClick = {pantalla = "MisAlarmas"}
-
+                            onMisAlarmasClick = {
+                                pantalla = "MisAlarmas"
+                            }
                         )
                     }
 
                     "Funcionario" -> {
                         FuncionarioScreen(
+                            usuario = usuarioSesion,
+                            alarmas = viewAlarma.alarmas,
+                            onConfirmarAlarmaClick = { id ->
+                                viewAlarma.confirmarAlarma(id)
+                            },
+                            onCerrarAlarmaClick = { id ->
+                                viewAlarma.cerrarAlarma(id)
+                            },
                             onSalirClick = {
+                                usuarioSesion = ""
                                 pantalla = "Inicio"
                             }
                         )
@@ -167,10 +186,14 @@ class MainActivity : ComponentActivity() {
                     }
 
                     "MisAlarmas" -> {
-                        MisAlarmasScreen(alarmas = viewAlarma.alarmas,
-                            onVolverClick = {pantalla = "Inicio"},
-                            onVolverCuidadanoClick = {pantalla = "Ciudadano"},
-                            onConfirmarAlarmaClick = {id -> viewAlarma.confirmarAlarma(id)}
+                        MisAlarmasScreen(
+                            alarmas = viewAlarma.alarmas,
+                            onVolverClick = {
+                                pantalla = "Inicio"
+                            },
+                            onVolverCuidadanoClick = {
+                                pantalla = "Ciudadano"
+                            }
                         )
                     }
 

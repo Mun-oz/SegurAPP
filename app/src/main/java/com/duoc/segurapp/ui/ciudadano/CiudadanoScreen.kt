@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 
 @Composable
 fun CiudadanoScreen(
+    usuario: String,
     onCerrarSesionClick: () -> Unit,
     onSeguimientoClick: () -> Unit,
     onMisAlarmasClick: () -> Unit
@@ -28,7 +29,7 @@ fun CiudadanoScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Bienvenido",
+                    text = "Bienvenido, $usuario",
                     style = MaterialTheme.typography.titleLarge
                 )
 

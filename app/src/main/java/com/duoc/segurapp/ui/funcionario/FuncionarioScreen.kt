@@ -1,24 +1,26 @@
-
 package com.duoc.segurapp.ui.funcionario
+
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import com.duoc.segurapp.model.Alarma
 
 @Composable
-fun FuncionarioScreen(onSalirClick: () -> Unit) {
-
-    var categoriaSeleccionada by remember {
+fun FuncionarioScreen(
+    usuario: String,
+    alarmas: List<Alarma>,
+    onConfirmarAlarmaClick: (String) -> Unit,
+    onCerrarAlarmaClick: (String) -> Unit,
+    onSalirClick: () -> Unit
+) {
+    var estadoSeleccionado by remember {
         mutableStateOf<String?>(null)
     }
 
@@ -34,7 +36,7 @@ fun FuncionarioScreen(onSalirClick: () -> Unit) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Funcionario",
+                    "Funcionario",
                     style = MaterialTheme.typography.titleLarge
                 )
 
@@ -52,81 +54,127 @@ fun FuncionarioScreen(onSalirClick: () -> Unit) {
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp)
         ) {
-
             Text(
-                text = "Bienvenido, funcionario",
+                "Bienvenido,  $usuario",
                 style = MaterialTheme.typography.headlineSmall
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(Modifier.height(20.dp))
 
-            Text(
-                text = "Resumen de casos",
-                style = MaterialTheme.typography.titleLarge
-            )
+            if (estadoSeleccionado == null) {
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    "Resumen de casos",
+                    style = MaterialTheme.typography.titleLarge
+                )
 
+                Spacer(Modifier.height(16.dp))
 
-            if (categoriaSeleccionada == null) {
-
-                ResumenCaso("Casos abiertos") {
-                    categoriaSeleccionada = "Casos abiertos"
+                ResumenCaso(
+                    "Casos abiertos",
+                    alarmas.count { it.estado == "Pendiente" }
+                ) {
+                    estadoSeleccionado = "Pendiente"
                 }
 
-                ResumenCaso("Casos en revisión") {
-                    categoriaSeleccionada = "Casos en revisión"
+                ResumenCaso(
+                    "Casos en revisión",
+                    alarmas.count { it.estado == "En revisión" }
+                ) {
+                    estadoSeleccionado = "En revisión"
                 }
 
-                ResumenCaso("Casos cerrados") {
-                    categoriaSeleccionada = "Casos cerrados"
+                ResumenCaso(
+                    "Casos cerrados",
+                    alarmas.count { it.estado == "Cerrada" }
+                ) {
+                    estadoSeleccionado = "Cerrada"
                 }
 
             } else {
 
-                val caso = when (categoriaSeleccionada) {
-                    "Casos abiertos" -> "AL-001"
-                    "Casos en revisión" -> "AL-002"
-                    else -> "AL-003"
+                val filtradas = alarmas.filter {
+                    it.estado == estadoSeleccionado
                 }
 
-                Card(modifier = Modifier.fillMaxWidth()) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text("Caso: $caso")
-                        Text("Estado: $categoriaSeleccionada")
-                        Text("Sector: Zona 3")
-                        Text("Reporte ficticio de prueba")
+                Text(
+                    "Estado: $estadoSeleccionado",
+                    style = MaterialTheme.typography.titleLarge
+                )
+
+                Spacer(Modifier.height(16.dp))
+
+                if (filtradas.isEmpty()) {
+                    Text("No hay alarmas en esta categoría")
+                }
+
+                filtradas.forEach { alarma ->
+
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 12.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(16.dp)
+                        ) {
+                            Text(
+                                "Caso: ${alarma.id.take(8)}",
+                                style = MaterialTheme.typography.titleMedium
+                            )
+
+                            Spacer(Modifier.height(8.dp))
+
+                            Text("Descripción: ${alarma.descripcion}")
+                            Text("Zona: ${alarma.zona}")
+                            Text("Estado: ${alarma.estado}")
+
+                            Spacer(Modifier.height(12.dp))
+
+                            if (alarma.estado == "Pendiente") {
+                                Button(
+                                    onClick = {
+                                        onConfirmarAlarmaClick(alarma.id)
+                                    },
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Text("Confirmar e iniciar revisión")
+                                }
+                            }
+
+                            if (alarma.estado == "En revisión") {
+                                Button(
+                                    onClick = {
+                                        onCerrarAlarmaClick(alarma.id)
+                                    },
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Text("Cerrar caso")
+                                }
+                            }
+                        }
                     }
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(Modifier.height(12.dp))
 
-                Button(
-                    onClick = { categoriaSeleccionada = null }
+                OutlinedButton(
+                    onClick = {
+                        estadoSeleccionado = null
+                    },
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     Text("Volver a los casos")
                 }
             }
-
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Button(
-                onClick = {},
-                modifier = Modifier.fillMaxWidth(),
-                enabled = false
-            ) {
-                Text("Registrar caso")
-            }
-
         }
     }
 }
 
-
 @Composable
 fun ResumenCaso(
     titulo: String,
+    cantidad: Int,
     onClick: () -> Unit
 ) {
     Card(
@@ -137,15 +185,15 @@ fun ResumenCaso(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = titulo,
+                titulo,
                 style = MaterialTheme.typography.titleMedium
             )
 
+            Text("Cantidad: $cantidad")
             Text(
-                text = "Toca para revisar",
+                "Toca para revisar",
                 style = MaterialTheme.typography.bodySmall
             )
         }
     }
 }
-
