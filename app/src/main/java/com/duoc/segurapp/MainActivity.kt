@@ -20,7 +20,6 @@ import com.duoc.segurapp.ui.registro.RegistroScreen
 import com.duoc.segurapp.ui.seguimiento.SeguimientoScreen
 import com.duoc.segurapp.ui.funcionario.FuncionarioScreen
 import com.duoc.segurapp.ui.alarma.MisAlarmasScreen
-import com.duoc.segurapp.ui.confirmaralarma.ConfirmarAlarmaScreen
 import com.duoc.segurapp.ui.confirmarenvio.ConfirmarEnvioScreen
 import com.duoc.segurapp.ui.confirmarenvio.EnvioExitosoScreen
 
@@ -175,12 +174,6 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    "Registrar Emergencia" -> {
-                        ConfirmarAlarmaScreen(
-                            viewAlarma = viewAlarma,
-                            onVolverClick = {pantalla = "Inicio"}
-                        )
-                    }
 
 
                 }
