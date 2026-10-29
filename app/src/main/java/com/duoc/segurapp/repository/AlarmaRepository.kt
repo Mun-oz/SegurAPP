@@ -18,4 +18,13 @@ class AlarmaRepository {
         }
     }
 
+
+    fun buscarAlarmaPorId(id: String): Alarma? {
+        return alarmas.find { it.id == id }
+    }
+
+    fun obtenerAlarmasPorEstado(estado: String): List<Alarma> {
+        return alarmas.filter { it.estado == estado }
+    }
+
 }
