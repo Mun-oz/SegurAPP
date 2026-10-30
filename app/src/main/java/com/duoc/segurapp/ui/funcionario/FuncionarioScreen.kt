@@ -24,6 +24,51 @@ fun FuncionarioScreen(
         mutableStateOf<String?>(null)
     }
 
+    var alarmaParaCerrar by remember {
+        mutableStateOf<Alarma?>(null)
+    }
+
+    alarmaParaCerrar?.let { alarma ->
+
+        AlertDialog(
+            onDismissRequest = {
+                alarmaParaCerrar = null
+            },
+
+            title = {
+                Text("¿Cerrar este caso?")
+            },
+
+            text = {
+                Text(
+                    "La alarma cambiará al estado Cerrada. " +
+                            "¿Deseas continuar?"
+                )
+            },
+
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        onCerrarAlarmaClick(alarma.id)
+                        alarmaParaCerrar = null
+                    }
+                ) {
+                    Text("Confirmar")
+                }
+            },
+
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        alarmaParaCerrar = null
+                    }
+                ) {
+                    Text("Cancelar")
+                }
+            }
+        )
+    }
+
     Scaffold(
         containerColor = Color(0xFFFFF7ED),
         topBar = {
@@ -145,13 +190,14 @@ fun FuncionarioScreen(
                             if (alarma.estado == "En revisión") {
                                 Button(
                                     onClick = {
-                                        onCerrarAlarmaClick(alarma.id)
+                                        alarmaParaCerrar = alarma
                                     },
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
                                     Text("Cerrar caso")
                                 }
                             }
+
                         }
                     }
                 }
