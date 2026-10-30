@@ -8,9 +8,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import com.duoc.segurapp.viewmodel.UsuarioViewModel
 
 @Composable
 fun LoginScreen(
+    usuarioViewModel: UsuarioViewModel,
     onLoginSuccess: (String) -> Unit,
     onFuncionarioLogin: (String) -> Unit,
     onVolverClick: () -> Unit,
@@ -129,9 +131,20 @@ fun LoginScreen(
                             onFuncionarioLogin(usuario.trim().substringBefore("@"))
                         }
                     } else {
-                        mensaje = ""
-                        onLoginSuccess(usuario.trim())
+                        usuarioViewModel.iniciarSesion(
+                            usuario.trim(),
+                            contrasena
+                        ) { nombre ->
+
+                            if (nombre != null) {
+                                mensaje = ""
+                                onLoginSuccess(nombre)
+                            } else {
+                                mensaje = "Usuario o contraseña incorrectos"
+                            }
+                        }
                     }
+
                 },
                 modifier = Modifier
                     .fillMaxWidth()

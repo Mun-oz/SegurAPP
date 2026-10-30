@@ -22,6 +22,12 @@ import com.duoc.segurapp.ui.funcionario.FuncionarioScreen
 import com.duoc.segurapp.ui.alarma.MisAlarmasScreen
 import com.duoc.segurapp.ui.confirmarenvio.ConfirmarEnvioScreen
 import com.duoc.segurapp.ui.confirmarenvio.EnvioExitosoScreen
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.duoc.segurapp.data.SegurAppDatabase
+import com.duoc.segurapp.repository.UsuarioRepository
+import com.duoc.segurapp.viewmodel.UsuarioViewModel
+import com.duoc.segurapp.viewmodel.UsuarioViewModelFactory
 
 class MainActivity : ComponentActivity() {
 
@@ -43,13 +49,25 @@ class MainActivity : ComponentActivity() {
                     mutableStateOf<Alarma?>(null)
                 }
 
-                var cuentaPrueba by remember {
-                    mutableStateOf<Pair<String, String>?>(null)
-                }
-
                 var usuarioSesion by remember {
                     mutableStateOf("")
                 }
+
+                val context = LocalContext.current
+
+                val baseDatos = remember {
+                    SegurAppDatabase.obtener(context)
+                }
+
+                val repositorioUsuarios = remember {
+                    UsuarioRepository(baseDatos.usuarioDao())
+                }
+
+                val usuarioViewModel: UsuarioViewModel = viewModel(
+                    factory = UsuarioViewModelFactory(repositorioUsuarios)
+                )
+
+
 
                 when (pantalla) {
 
@@ -64,9 +82,9 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-
                     "Login" -> {
                         LoginScreen(
+                            usuarioViewModel = usuarioViewModel,
                             onLoginSuccess = { usuario ->
                                 usuarioSesion = usuario
                                 pantalla = "Ciudadano"
@@ -86,8 +104,8 @@ class MainActivity : ComponentActivity() {
 
                     "Registro" -> {
                         RegistroScreen(
-                            onRegistrarClick = { usuario, contrasena ->
-                                cuentaPrueba = usuario to contrasena
+                            usuarioViewModel = usuarioViewModel,
+                            onRegistrarClick = {
                                 pantalla = "Login"
                             },
                             onVolverClick = {

@@ -8,10 +8,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import com.duoc.segurapp.viewmodel.UsuarioViewModel
 
 @Composable
 fun RegistroScreen(
-    onRegistrarClick: (String, String) -> Unit,
+    usuarioViewModel: UsuarioViewModel,
+    onRegistrarClick: () -> Unit,
     onVolverClick: () -> Unit
 ) {
     var usuario by remember { mutableStateOf("") }
@@ -83,9 +85,20 @@ fun RegistroScreen(
                     } else if (contrasena != confirmarContrasena) {
                         mensaje = "Las contraseñas no coinciden"
                     } else {
-                        mensaje = ""
-                        onRegistrarClick(usuario.trim(), contrasena)
+                        usuarioViewModel.registrarUsuario(
+                            usuario.trim(),
+                            contrasena
+                        ) { registrado ->
+
+                            if (registrado) {
+                                mensaje = ""
+                                onRegistrarClick()
+                            } else {
+                                mensaje = "El nombre de usuario ya está registrado"
+                            }
+                        }
                     }
+
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
