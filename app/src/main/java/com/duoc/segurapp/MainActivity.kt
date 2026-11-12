@@ -28,6 +28,10 @@ import com.duoc.segurapp.data.SegurAppDatabase
 import com.duoc.segurapp.repository.UsuarioRepository
 import com.duoc.segurapp.viewmodel.UsuarioViewModel
 import com.duoc.segurapp.viewmodel.UsuarioViewModelFactory
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.ui.Modifier
 
 class MainActivity : ComponentActivity() {
 
@@ -39,6 +43,10 @@ class MainActivity : ComponentActivity() {
             SegurAPPTheme {
 
                 var pantalla by remember {
+                    mutableStateOf("Inicio")
+                }
+
+                var pantallaRetornoAlarma by remember {
                     mutableStateOf("Inicio")
                 }
 
@@ -77,6 +85,7 @@ class MainActivity : ComponentActivity() {
                                 pantalla = "Login"
                             },
                             onEmergenciaClick = {
+                                pantallaRetornoAlarma = "Inicio"
                                 pantalla = "Registrar"
                             }
                         )
@@ -124,7 +133,7 @@ class MainActivity : ComponentActivity() {
                                 pantalla = "ConfirmarEnvio"
                             },
                             onVolverClick = {
-                                pantalla = "Inicio"
+                                pantalla = pantallaRetornoAlarma
                             }
                         )
                     }
@@ -152,14 +161,32 @@ class MainActivity : ComponentActivity() {
                     "EnvioExitoso" -> {
                         EnvioExitosoScreen(
                             onVolverInicioClick = {
-                                pantalla = "Inicio"
+                                pantalla = pantallaRetornoAlarma
                             }
                         )
                     }
 
 
                     "Mapa" -> {
-                        GoogleMapsScreen()
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .statusBarsPadding()
+                        ) {
+                            TextButton(
+                                onClick = {
+                                    pantalla = "Ciudadano"
+                                }
+                            ) {
+                                Text("← Volver al inicio")
+                            }
+
+                            Box(
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                GoogleMapsScreen()
+                            }
+                        }
                     }
 
                     "Ciudadano" -> {
@@ -174,6 +201,13 @@ class MainActivity : ComponentActivity() {
                             },
                             onMisAlarmasClick = {
                                 pantalla = "MisAlarmas"
+                            },
+                            onReportarEmergenciaClick = {
+                                pantallaRetornoAlarma = "Ciudadano"
+                                pantalla = "Registrar"
+                            },
+                            onAbrirMapaClick = {
+                                pantalla = "Mapa"
                             }
                         )
                     }
